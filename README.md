@@ -1,4 +1,5 @@
-# A Milter for using Spamhaus HBL with Zimbra/Postfix
+# A Milter for using Spamhaus HBL with Zimbra Postfix
+
 In this article you will learn how to use Spamhaus Hash Blocklist (HBL) to improve email protection in Zimbra. For a long time administrators of Zimbra have relied on [Spamhaus](https://www.spamhaus.org/news/) to fight incoming spam by [configuring Postfix](https://wiki.zimbra.com/wiki/Anti-spam) using traditional blacklists. These traditional blocklists work by blocking IP (ranges) and domains of known spammers.
 
 When an email is sent from free email providers such as Gmail, Hotmail or Protonmail it is not always possible to list the sending IP or domain on a blocklist as this would affect many other legitimate users. By using hashes Spamhaus can list specific, compromised email addresses that are sending spam or otherwise malicious content.
@@ -10,7 +11,7 @@ If you prefer you can also use Spamhaus HBL using SpamAssassin, this is document
 To be able to use Spamhaus HBL you need to register for a [DQS account](https://www.spamhaus.com/product/data-query-service/) and get a commercial subscription. Spamhaus has a [special offer for Zimbra](#) users.
 
 ## How does the Milter work
-Whenever an email passes through Postfix, the Milter will query the Spamhaus HBL using DNS. It will do lookups for the email address in the From and Sender header AND the SMTP session Envelope From. In case an email address is listen in HBL the X-Spam-Flag header will be added and set to YES.
+Whenever an email passes through Postfix, the Milter will query the Spamhaus HBL using DNS. It will do lookups for the email address in the From and Sender header. In case an email address is listen in HBL the X-Spam-Flag header will be added and set to YES.
 
 ## Installing the Milter
 Run as root:

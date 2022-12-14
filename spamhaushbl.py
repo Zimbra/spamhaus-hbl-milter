@@ -138,7 +138,6 @@ class myMilter(Milter.Base):
     self.canon_from = '@'.join(parse_addr(mailfrom))
     self.fp.write(b'From %s %s\n' % (self.canon_from.encode(),
         time.ctime().encode()))
-    self.queryHBL(self.canon_from)
     return Milter.CONTINUE
 
 
