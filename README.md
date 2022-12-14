@@ -20,6 +20,7 @@ mkdir /etc/milter
 wget https://raw.githubusercontent.com/Zimbra/spamhaus-hbl-milter/main/spamhaushbl.py -O /etc/milter/spamhaushbl.py
 wget https://raw.githubusercontent.com/Zimbra/spamhaus-hbl-milter/main/spamhaushbl.conf -O /etc/supervisor/conf.d/spamhaushbl.conf
 chmod +rx /etc/milter/spamhaushbl.py
+sed -i -e 's/PUT_DQS_KEY_HERE/aip7yig6sahg6ehsohn5shco3z/g' /etc/milter/spamhaushbl.py #replace aip7yig6sahg6ehsohn5shco3z with your real key
 systemctl restart supervisor
 tail -f /var/log/spamhaushbl.log
 ```
