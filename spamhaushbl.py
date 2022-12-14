@@ -44,7 +44,7 @@ else:
 logq = None
 
 class myMilter(Milter.Base):
-  DQSkey = "PUT DQS KEY HERE"
+  DQSkey = "PUT_DQS_KEY_HERE"
 
   def spamhausNormalize(self, e):
     email = parseaddr(e)
