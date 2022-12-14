@@ -47,22 +47,25 @@ class myMilter(Milter.Base):
   DQSkey = "PUT_DQS_KEY_HERE"
 
   def spamhausNormalize(self, e):
-    email = parseaddr(e)
-    email = email[1]
-    if(self.basicEmailValidate(email)):
-      email = email.lower()
-      emailparts = email.split('@');
-      user = emailparts[0]
-      domain = emailparts[1]
-      if domain == "googlemail.com":
-        domain = "gmail.com"
-      head, sep, tail = user.partition('+')
+    try:
+      email = parseaddr(e)
+      email = email[1]
+      if(self.basicEmailValidate(email)):
+        email = email.lower()
+        emailparts = email.split('@');
+        user = emailparts[0]
+        domain = emailparts[1]
+        if domain == "googlemail.com":
+          domain = "gmail.com"
+        head, sep, tail = user.partition('+')
 
-      if domain == "gmail.com":
-        head = head.replace('.', "")
+        if domain == "gmail.com":
+          head = head.replace('.', "")
 
-      normalized = head + '@' + domain
-      return normalized 
+        normalized = head + '@' + domain
+        return normalized
+    except Exception as e:
+      return Milter.CONTINUE
 
   def basicEmailValidate(self, email):
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -80,8 +83,8 @@ class myMilter(Milter.Base):
       return Milter.CONTINUE
 
   def queryHBL(self, email):
-    hash_string = self.makeHash(self.spamhausNormalize(email))
     try:
+      hash_string = self.makeHash(self.spamhausNormalize(email))
       #if there is a result, it means the hash is listed in HBL
       self.log("DNS Lookup: " + hash_string + "._email.[hidden].hbl.dq.spamhaus.net")
       result = dns.resolver.resolve(hash_string+"._email."+DQSkey+".hbl.dq.spamhaus.net", 'A')
