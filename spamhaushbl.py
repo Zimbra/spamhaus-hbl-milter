@@ -72,8 +72,12 @@ class myMilter(Milter.Base):
       return False
 
   def makeHash(self, a_string):
-    hashed = hashlib.sha256(a_string.encode('utf-8')).digest()
-    return base64.b32encode(hashed).decode().rstrip("=")
+    try:
+       hashed = hashlib.sha256(a_string.encode('utf-8')).digest()
+       return_string = base64.b32encode(hashed).decode().rstrip("=")
+       return return_string
+    except Exception as e:
+      return Milter.CONTINUE
 
   def queryHBL(self, email):
     hash_string = self.makeHash(self.spamhausNormalize(email))
@@ -87,7 +91,6 @@ class myMilter(Milter.Base):
       return Milter.CONTINUE
     except Exception as e:
       #The query failed or the hash is not listed
-      self.log(hash_string + " is not listed in HBL.")
       return Milter.CONTINUE
 
   def __init__(self):  # A new instance with each new connection.
