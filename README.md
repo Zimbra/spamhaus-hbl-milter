@@ -29,8 +29,15 @@ tail -f /var/log/spamhaushbl.log
 ## Configuring Zimbra
 ```
 su - zimbra
+# check if you already have Milters:
+zmprov gs `zmhostname` zimbraMtaSmtpdMilters
+zmprov gs `zmhostname` zimbraMtaNonSmtpdMilters
+#if not proceed like so:
 zmprov ms `zmhostname` zimbraMtaSmtpdMilters inet:127.0.0.1:8802
 zmprov ms `zmhostname` zimbraMtaNonSmtpdMilters inet:127.0.0.1:8802
+#if you use Milters already you can daisy chain them like so
+#zmprov ms `zmhostname` zimbraMtaSmtpdMilters "inet:existing-ip:port, inet:127.0.0.1:8802"
+#zmprov ms `zmhostname` zimbraMtaNonSmtpdMilters "inet:existing-ip:port, inet:127.0.0.1:8802"
 zmprov ms `zmhostname` zimbraMilterServerEnabled TRUE
 zmmtactl restart
 
