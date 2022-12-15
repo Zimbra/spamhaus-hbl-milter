@@ -44,8 +44,6 @@ else:
 logq = None
 
 class myMilter(Milter.Base):
-  DQSkey = "PUT_DQS_KEY_HERE"
-
   def spamhausNormalize(self, e):
     try:
       email = parseaddr(e)
@@ -87,7 +85,7 @@ class myMilter(Milter.Base):
       hash_string = self.makeHash(self.spamhausNormalize(email))
       #if there is a result, it means the hash is listed in HBL
       self.log("DNS Lookup: " + hash_string + "._email.[hidden].hbl.dq.spamhaus.net")
-      result = dns.resolver.resolve(hash_string+"._email."+DQSkey+".hbl.dq.spamhaus.net", 'A')
+      result = dns.resolver.resolve(hash_string+"._email."+self.DQSkey+".hbl.dq.spamhaus.net", 'A')
       self.log(hash_string + " is listed in HBL.")
       self.isDQSlisted = 'true'
       #return Milter.REJECT for hard reject
@@ -98,6 +96,7 @@ class myMilter(Milter.Base):
 
   def __init__(self):  # A new instance with each new connection.
     self.id = Milter.uniqueID()  # Integer incremented with each call.
+    self.DQSkey = "PUT_DQS_KEY_HERE"
     self.isDQSlisted = 'false';
 
   # each connection runs in its own thread and has its own myMilter
