@@ -14,7 +14,7 @@ To be able to use Spamhaus HBL you need to register for a [DQS account](https://
 Whenever an email passes through Postfix, the Milter will query the Spamhaus HBL using DNS. It will do lookups for the email address in the From and Sender header. In case an email address is listen in HBL the X-Spam-Flag header will be added and set to YES.
 
 ## Installing the Milter
-Run as root:
+These instructions have been validated on Ubuntu 20.04. Run as root:
 ```
 apt install python3-milter supervisor python3-dnspython
 mkdir /etc/milter
@@ -46,7 +46,7 @@ postconf -e 'smtpd_milters = inet:127.0.0.1:8802'
 Try sending some emails and:
 
 ```
-tail -f /var/log/milter-custom.log
+tail -f /var/log/spamhaushbl.log
 tail -f /var/log/zimbra.log
 ```
 You can also run the milter without supervisord, stop supervisord and just run it like `python3 /etc/milter/spamhaushbl.py`.
