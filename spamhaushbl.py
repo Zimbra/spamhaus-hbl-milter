@@ -167,7 +167,7 @@ class myMilter(Milter.Base):
     self.fp.seek(0)
     if 'true' in self.isDQSlisted:
       self.addheader('X-Spam-Flag','YES')
-    return Milter.ACCEPT
+    return Milter.CONTINUE
 
   ## === Support Functions ===
 
